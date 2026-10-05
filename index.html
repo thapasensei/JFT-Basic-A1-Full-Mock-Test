@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Thapa Sensei - JFT-Basic A1 Online Preparation Class</title>
+    <style>
+        * { 
+            box-sizing: border-box; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            user-select: none; 
+            -webkit-user-select: none; 
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        
+        rt { font-size: 11.5px !important; font-weight: bold !important; color: #0d47a1 !important; }
+
+        html, body {
+            background-color: #f4f6f9;
+            min-height: 100vh;
+            width: 100%;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 10px;
+        }
+
+        .welcome-card { 
+            background: white; 
+            width: 100%; 
+            max-width: 600px; 
+            border-radius: 12px; 
+            box-shadow: 0 5px 20px rgba(0,0,0,0.12); 
+            overflow: hidden; 
+            border: 1px solid #e0e0e0; 
+            margin: auto;
+            position: relative;
+        }
+        
+        .header { background: linear-gradient(135deg, #0d47a1, #1976d2); color: white; padding: 20px 15px; text-align: center; }
+        .instructor-name { font-size: 26px; font-weight: 900; color: #ffeb3b; text-shadow: 2px 2px 4px rgba(0,0,0,0.4); margin-bottom: 4px; }
+        .class-title { font-size: 16px; font-weight: 700; color: #ffffff; margin-bottom: 8px; }
+        .contact-info { font-size: 13px; background: rgba(255, 255, 255, 0.18); display: inline-block; padding: 5px 14px; border-radius: 20px; font-weight: 500; }
+        
+        .card-body { padding: 20px; }
+        .student-info { background: #f4f8ff; border: 1px solid #bbdefb; border-left: 6px solid #0d47a1; padding: 12px; border-radius: 6px; margin-bottom: 16px; }
+        .info-item { font-size: 13.5px; color: #333; margin-bottom: 4px; }
+        .info-item strong { color: #0d47a1; }
+
+        .name-input-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 15px; text-align: left; }
+        .name-input-group label { font-size: 14px; font-weight: bold; color: #0d47a1; }
+        .name-input-group input { padding: 12px; font-size: 15px; border: 2px solid #90caf9; border-radius: 6px; outline: none; width: 100%; }
+
+        .instructions-title { font-size: 16px; color: #0d47a1; font-weight: 700; margin-bottom: 10px; border-bottom: 2px solid #e0e0e0; padding-bottom: 6px; }
+        
+        .notice-box {
+            background: #fff8e1;
+            border: 1px solid #ffe0b2;
+            border-left: 5px solid #ffa000;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            color: #5d4037;
+            line-height: 1.4;
+        }
+
+        .start-btn { width: 100%; background-color: #2e7d32; color: white; padding: 14px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; text-align: center; }
+        .start-btn:hover { background: #27692b; }
+
+        .set-selector-box { margin-top: 15px; }
+        
+        .set-link-btn {
+            display: block !important;
+            width: 100% !important;
+            background: #ffffff !important;
+            border: 2px solid #0d47a1 !important;
+            color: #0d47a1 !important;
+            text-decoration: none !important;
+            padding: 14px 20px !important;
+            border-radius: 8px !important;
+            font-size: 16px !important;
+            font-weight: bold !important;
+            margin-bottom: 12px !important;
+            text-align: left !important;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .set-link-btn:hover { 
+            background: #0d47a1 !important; 
+            color: #ffffff !important; 
+            box-shadow: 0 4px 10px rgba(13, 71, 161, 0.25);
+        }
+
+        .coming-soon-btn {
+            display: block;
+            width: 100%;
+            background: #f1f1f1;
+            border: 2px solid #ccc;
+            color: #777;
+            text-decoration: none;
+            padding: 14px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-align: left;
+            cursor: not-allowed;
+        }
+
+        #loginScreen { display: none; }
+        #landingScreen { display: none; }
+
+        .error-msg { color: #d32f2f; font-size: 13px; margin-top: 8px; font-weight: bold; display: none; text-align: left; }
+
+        /* Modal / Control Panel Styles */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-card { background: white; padding: 25px; border-radius: 8px; width: 340px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        .modal-card input, .modal-card select { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .admin-panel { width: 95%; max-width: 850px; max-height: 85vh; overflow-y: auto; text-align: left; }
+        .tab-btn { padding: 8px 15px; margin-right: 5px; cursor: pointer; border: none; background: #ddd; border-radius: 4px; font-weight: bold; }
+        .tab-btn.active { background: #0d47a1; color: white; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; word-break: break-all; }
+        th { background: #e9ecef; color: #0d47a1; }
+        .btn-sm { padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; margin-right: 4px; }
+        .btn-reset { background: #ffc107; color: black; }
+        .btn-del { background: #dc3545; color: white; }
+    </style>
+</head>
+<body>
+
+    <div class="welcome-card">
+        <div class="header">
+            <div class="instructor-name">Thapa Sensei</div>
+            <div class="class-title">JFT-Basic A1 Online Preparation Class</div>
+            <div class="contact-info">📞 Contact / Viber / WhatsApp: <strong>9867222929</strong></div>
+        </div>
+
+        <!-- 1. STUDENT / TEACHER LOGIN SCREEN -->
+        <div class="card-body" id="loginScreen">
+            <div class="instructions-title" style="margin-top:0;">Portal Login (विद्यार्थी / शिक्षक लगइन)</div>
+            
+            <div class="notice-box">
+                ⚠️️ <strong>Important Notice:</strong> Once you enter your Gmail, it will be bound to this device. Use your personal Gmail account.
+            </div>
+
+            <div class="name-input-group">
+                <label for="studentNameInput">Full Name / Username (नाम / युजरनेम):</label>
+                <input type="text" id="studentNameInput" placeholder="Enter full name or admin username...">
+            </div>
+
+            <div class="name-input-group">
+                <label for="studentEmailInput">Gmail Address / Password (जिमेल / पासवर्ड):</label>
+                <input type="password" id="studentEmailInput" placeholder="Enter your gmail or admin password...">
+            </div>
+
+            <div id="studentLoginError" class="error-msg"></div>
+
+            <button class="start-btn" style="margin-top: 10px;" onclick="handleUniversalLogin()">Login & Proceed</button>
+        </div>
+
+        <!-- 2. LANDING SCREEN (FOR STUDENTS) -->
+        <div class="card-body" id="landingScreen">
+            <div class="student-info">
+                <div class="info-item"><strong>Candidate Name:</strong> <span id="loggedInNameDisplay"></span></div>
+                <div class="info-item"><strong>Email / Code:</strong> <span id="loggedInEmailDisplay"></span></div>
+                <div class="info-item"><strong>Test Level:</strong> JFT-Basic A1 Practice Exams</div>
+            </div>
+
+            <div class="instructions-title">📚 परीक्षा छान्नुहोस् (Select Set):</div>
+
+            <div class="set-selector-box">
+                <div class="set-link-btn" onclick="navigateToSet('https://thapasensei.github.io/Basic-Mock-Test-Set-1/')">📘 JFT-BASIC A1 - SET 1 ➔</div>
+                <div class="set-link-btn" onclick="navigateToSet('https://thapasensei.github.io/Basic-Mock-Test-Set-2/')">📗 JFT-BASIC A1 - SET 2 ➔</div>
+                <div class="set-link-btn" onclick="navigateToSet('https://thapasensei.github.io/Basic-Mock-Test-Set-3/')">📗 JFT-BASIC A1 - SET 3 ➔</div>
+                <div class="set-link-btn" onclick="navigateToSet('https://thapasensei.github.io/Basic-Mock-Test-Set-4/')">📗 JFT-BASIC A1 - SET 4 ➔</div>
+                <div class="coming-soon-btn">📙 JFT-BASIC A1 - SET 5 (Coming Soon)</div>
+                <div class="coming-soon-btn">📕 JFT-BASIC A1 - SET 6 (Coming Soon)</div>
+            </div>
+            
+            <button onclick="logoutStudent()" style="width:100%; margin-top:15px; background:#6c757d; color:white; padding:10px; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">Logout</button>
+        </div>
+    </div>
+
+    <!-- 3. TEACHER CONTROL PANEL MODAL -->
+    <div id="teacherDashboardModal" class="modal-overlay" style="display:none;">
+        <div class="modal-card admin-panel">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h3 style="margin:0; color:#0d47a1;">👨‍🏫 Teacher Control Panel (ACC Education)</h3>
+                <button onclick="closeTeacherDashboard()" style="background:red; color:white; border:none; padding:6px 12px; cursor:pointer; border-radius:4px; font-weight:bold;">Logout / Close</button>
+            </div>
+            <hr style="margin:15px 0;">
+
+            <div>
+                <button class="tab-btn active" onclick="switchTab('manageStudentsTab')">👥 Student List (Gmail & Status)</button>
+                <button class="tab-btn" onclick="switchTab('addStudentTab')">➕ Add Code/User</button>
+                <button class="tab-btn" onclick="switchTab('reportsTab')">📊 Score Reports</button>
+            </div>
+
+            <!-- TAB 1: Manage Students List -->
+            <div id="manageStudentsTab" class="tab-content" style="margin-top:15px;">
+                <h4>दर्ता भएका विद्यार्थीहरूको सूची (Gmail & Phone Status):</h4>
+                <div id="studentsListTable" style="margin-top:10px;">Loading...</div>
+            </div>
+
+            <!-- TAB 2: Add Student Code -->
+            <div id="addStudentTab" class="tab-content" style="display:none; margin-top:15px;">
+                <h4>नयाँ विद्यार्थीको कोड बनाउने:</h4>
+                <div style="max-width:350px;">
+                    <label>Student Name:</label>
+                    <input type="text" id="newStudentName" placeholder="e.g. Ram Bahadur" />
+                    
+                    <label>Validity Days:</label>
+                    <select id="validityDays">
+                        <option value="7">7 Days</option>
+                        <option value="15">15 Days</option>
+                        <option value="30" selected>1 Month (30 Days)</option>
+                        <option value="90">3 Months</option>
+                    </select>
+                    
+                    <button class="start-btn" onclick="createNewStudentCode()" style="margin-top:10px;">Generate Code</button>
+                    <p id="createCodeResult" style="font-weight:bold; margin-top:10px;"></p>
+                </div>
+            </div>
+
+            <!-- TAB 3: Score Reports -->
+            <div id="reportsTab" class="tab-content" style="display:none; margin-top:15px;">
+                <h4>सबै सेटको परीक्षा नतिजा (Exam Score Reports):</h4>
+                <div id="reportsListTable" style="margin-top:10px;">Loading...</div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    const BACKEND_URL = "https://jft-backend.vercel.app";
+
+    document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || (e.ctrlKey && (e.key === 'u' || e.key === 's' || e.key === 'p' || e.key === 'c'))) {
+            e.preventDefault();
+        }
+    });
+
+    window.onload = function() {
+        checkAutoLogin();
+    };
+
+    function navigateToSet(baseUrl) {
+        const name = localStorage.getItem('thapa_jft_a1_manual_name') || 'Student';
+        const email = localStorage.getItem('thapa_jft_a1_manual_email') || '';
+        
+        const fullUrl = `${baseUrl}?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}`;
+        window.location.href = fullUrl;
+    }
+
+    function checkAutoLogin() {
+        const savedEmail = localStorage.getItem('thapa_jft_a1_manual_email');
+        const savedName = localStorage.getItem('thapa_jft_a1_manual_name');
+
+        if (savedEmail && savedName) {
+            showLandingScreen(savedName, savedEmail);
+        } else {
+            document.getElementById('loginScreen').style.display = 'block';
+        }
+    }
+
+    async function handleUniversalLogin() {
+        const nameInput = document.getElementById('studentNameInput').value.trim();
+        const codeOrEmailInput = document.getElementById('studentEmailInput').value.trim();
+        const errorBox = document.getElementById('studentLoginError');
+
+        if (!nameInput || !codeOrEmailInput) {
+            errorBox.style.display = 'block';
+            errorBox.innerHTML = "❌ Please enter both fields!";
+            return;
+        }
+
+        errorBox.style.display = 'block';
+        errorBox.style.color = 'blue';
+        errorBox.innerHTML = "⌛ Verifying credentials...";
+
+        // 1. Teacher Check (Vercel Server)
+        try {
+            const teacherRes = await fetch(`${BACKEND_URL}/api/admin/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: nameInput, password: codeOrEmailInput })
+            });
+            const teacherData = await teacherRes.json();
+
+            if (teacherData.success) {
+                errorBox.style.display = 'none';
+                sessionStorage.setItem('adminUser', nameInput);
+                sessionStorage.setItem('adminPass', codeOrEmailInput);
+                document.getElementById('teacherDashboardModal').style.display = 'flex';
+                fetchDashboardData();
+                return;
+            }
+        } catch (e) { console.log("Checking student..."); }
+
+        // 2. Student Login
+        const cleanInput = codeOrEmailInput.toLowerCase();
+        try {
+            const response = await fetch(`${BACKEND_URL}/api/manual-login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: nameInput, email: cleanInput })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                localStorage.setItem('thapa_jft_a1_manual_email', cleanInput);
+                localStorage.setItem('thapa_jft_a1_manual_name', nameInput);
+                saveStudentLocally(nameInput, cleanInput);
+                errorBox.style.display = 'none';
+                showLandingScreen(nameInput, cleanInput);
+            } else {
+                errorBox.style.color = '#d32f2f';
+                errorBox.style.display = 'block';
+                errorBox.innerHTML = "❌ " + data.message;
+            }
+        } catch (err) {
+            localStorage.setItem('thapa_jft_a1_manual_email', cleanInput);
+            localStorage.setItem('thapa_jft_a1_manual_name', nameInput);
+            saveStudentLocally(nameInput, cleanInput);
+            errorBox.style.display = 'none';
+            showLandingScreen(nameInput, cleanInput);
+        }
+    }
+
+    function saveStudentLocally(name, email) {
+        let localStudents = JSON.parse(localStorage.getItem('jft_registered_students') || '{}');
+        localStudents[email] = { name: name, email: email, boundDeviceId: 'Mobile/PC Bound' };
+        localStorage.setItem('jft_registered_students', JSON.stringify(localStudents));
+    }
+
+    function showLandingScreen(name, email) {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('landingScreen').style.display = 'block';
+        document.getElementById('loggedInNameDisplay').innerText = name;
+        document.getElementById('loggedInEmailDisplay').innerText = email;
+    }
+
+    function logoutStudent() {
+        localStorage.removeItem('thapa_jft_a1_manual_email');
+        localStorage.removeItem('thapa_jft_a1_manual_name');
+        document.getElementById('landingScreen').style.display = 'none';
+        document.getElementById('loginScreen').style.display = 'block';
+    }
+
+    /* --- TEACHER CONTROL PANEL & TABLE RENDERING --- */
+    function closeTeacherDashboard() {
+        document.getElementById('teacherDashboardModal').style.display = 'none';
+        sessionStorage.clear();
+        document.getElementById('studentNameInput').value = "";
+        document.getElementById('studentEmailInput').value = "";
+    }
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById(tabId).style.display = 'block';
+        event.target.classList.add('active');
+
+        if (tabId === 'manageStudentsTab' || tabId === 'reportsTab') fetchDashboardData();
+    }
+
+    async function fetchDashboardData() {
+        const username = sessionStorage.getItem('adminUser');
+        const password = sessionStorage.getItem('adminPass');
+
+        let studentsData = {};
+        let reportsData = {};
+
+        try {
+            const res = await fetch(`${BACKEND_URL}/api/admin/data`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+            const data = await res.json();
+            if (data.success) {
+                studentsData = data.students || {};
+                reportsData = data.reports || {};
+            }
+        } catch (e) { console.error(e); }
+
+        // सर्भरमा डाटा नभए वा समस्या आएमा लोकल ब्याकअपबाट तान्ने
+        if (Object.keys(studentsData).length === 0) {
+            studentsData = JSON.parse(localStorage.getItem('jft_registered_students') || '{}');
+        }
+
+        renderStudentsTable(studentsData);
+        renderReportsTable(reportsData);
+    }
+
+    function renderStudentsTable(students) {
+        const container = document.getElementById('studentsListTable');
+        const keys = Object.keys(students);
+        
+        if (keys.length === 0) {
+            container.innerHTML = "<p style='color:red; font-weight:bold;'>हालसम्म कुनै पनि विद्यार्थी लगइन/दर्ता भएको छैन।</p>";
+            return;
+        }
+
+        let html = `<table>
+            <tr>
+                <th>Gmail / Access Key</th>
+                <th>Student Full Name</th>
+                <th>Device Status</th>
+                <th>Actions</th>
+            </tr>`;
+        
+        keys.forEach(k => {
+            const s = students[k];
+            const gmailOrCode = s.email || s.code || k;
+            const studentName = s.name || 'N/A';
+            const deviceStatus = s.boundDeviceId ? `<span style="color:green; font-weight:bold;">📱 Device Bound</span>` : `<span style="color:gray;">Not Bound</span>`;
+            
+            html += `<tr>
+                <td><b>${gmailOrCode}</b></td>
+                <td>${studentName}</td>
+                <td>${deviceStatus}</td>
+                <td>
+                    <button class="btn-sm btn-reset" onclick="manageStudent('${gmailOrCode}', 'reset')">Reset / Unlock</button>
+                    <button class="btn-sm btn-del" onclick="manageStudent('${gmailOrCode}', 'delete')">Delete</button>
+                </td>
+            </tr>`;
+        });
+        
+        html += `</table>`;
+        container.innerHTML = html;
+    }
+
+    function renderReportsTable(reports) {
+        const container = document.getElementById('reportsListTable');
+        const keys = Object.keys(reports);
+        if (keys.length === 0) { container.innerHTML = "<p>हालसम्म परीक्षाको कुनै रिपोर्ट प्राप्त भएको छैन।</p>"; return; }
+
+        let html = `<table>
+            <tr>
+                <th>Gmail / Code</th>
+                <th>Student Name</th>
+                <th>Last Score</th>
+                <th>Date</th>
+            </tr>`;
+        
+        keys.forEach(k => {
+            const r = reports[k];
+            html += `<tr>
+                <td><b>${k}</b></td>
+                <td>${r.name || 'N/A'}</td>
+                <td><b style="color:blue;">${r.lastScore || 0} / 250</b></td>
+                <td>${r.lastDate || 'N/A'}</td>
+            </tr>`;
+        });
+        html += `</table>`;
+        container.innerHTML = html;
+    }
+
+    async function manageStudent(code, action) {
+        if (!confirm(`के तपाईं यो विद्यार्थी (${code}) लाई ${action} गर्न चाहनुहुन्छ?`)) return;
+        const username = sessionStorage.getItem('adminUser');
+        const password = sessionStorage.getItem('adminPass');
+
+        try {
+            await fetch(`${BACKEND_URL}/api/admin/manage-student`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password, code, action })
+            });
+        } catch (e) {}
+
+        let localStudents = JSON.parse(localStorage.getItem('jft_registered_students') || '{}');
+        if (action === 'delete') {
+            delete localStudents[code];
+        } else if (action === 'reset' && localStudents[code]) {
+            localStudents[code].boundDeviceId = null;
+        }
+        localStorage.setItem('jft_registered_students', JSON.stringify(localStudents));
+
+        alert(`सफलतापूर्वक ${action} गरियो!`); 
+        fetchDashboardData(); 
+    }
+
+    async function createNewStudentCode() {
+        const name = document.getElementById('newStudentName').value.trim();
+        const days = parseInt(document.getElementById('validityDays').value);
+        const resText = document.getElementById('createCodeResult');
+
+        if (!name) { resText.style.color = "red"; resText.innerText = "Enter student name!"; return; }
+
+        const expiryTimestamp = Date.now() + (days * 24 * 60 * 60 * 1000);
+        const username = sessionStorage.getItem('adminUser');
+        const password = sessionStorage.getItem('adminPass');
+
+        resText.style.color = "blue"; resText.innerText = "Creating Code...";
+
+        try {
+            const res = await fetch(`${BACKEND_URL}/api/admin/add-student`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password, name, expiryTimestamp })
+            });
+            const data = await res.json();
+
+            if (data.success) {
+                resText.style.color = "green";
+                resText.innerHTML = `✅ Success!<br>Name: <b>${data.name}</b><br>Code: <b style="font-size:18px; color:#0d47a1;">${data.code}</b>`;
+                saveStudentLocally(data.name, data.code);
+                document.getElementById('newStudentName').value = "";
+            } else { 
+                saveStudentLocally(name, "CODE-" + Math.floor(1000 + Math.random() * 9000));
+            }
+        } catch (e) { 
+            const fallbackCode = "CODE-" + Math.floor(1000 + Math.random() * 9000);
+            saveStudentLocally(name, fallbackCode);
+            resText.style.color = "green"; 
+            resText.innerHTML = `✅ Saved!<br>Name: <b>${name}</b><br>Code: <b>${fallbackCode}</b>`; 
+        }
+    }
+</script>
+</body>
+</html>
